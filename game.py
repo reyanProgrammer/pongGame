@@ -41,6 +41,11 @@ while True:
     ball.x += ball_x_speed
     ball.y += ball_y_speed
 
+    if ball.top <= 0 or ball.bottom >= ScreenHeight:
+        ball_y_speed *= -1
+    if ball.left <= 0 or ball.right >= ScreenWidth:
+        ball_x_speed *= -1
+
     # updating the window
     pygame.display.flip()
     clock.tick(60)
