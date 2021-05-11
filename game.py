@@ -24,6 +24,8 @@ light_grey = (200, 200, 200)
 ball_x_speed = 7
 ball_y_speed = 7
 
+player_speed = 0
+
 
 def ball_move():
     global ball_x_speed, ball_y_speed
@@ -36,6 +38,14 @@ def ball_move():
         ball_x_speed *= -1
 
 
+def player_animation():
+    if player.top <= 0:
+        player.top = 0
+    if player.bottom >= ScreenHeight:
+        player.bottom = ScreenHeight
+    player.y += player_speed
+
+
 while True:
 
     # handling input
@@ -43,6 +53,17 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                player_speed += 7
+            if event.key == pygame.K_UP:
+                player_speed -= 7
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                player_speed -= 7
+            if event.key == pygame.K_UP:
+                player_speed += 7
+
     # Visual
     screen.fill(bg_color)
     pygame.draw.rect(screen, light_grey, player)
@@ -53,6 +74,7 @@ while True:
     ball.x += ball_x_speed
     ball.y += ball_y_speed
     ball_move()
+    player_animation()
 
     # updating the window
     pygame.display.flip()
