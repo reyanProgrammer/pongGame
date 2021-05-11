@@ -46,6 +46,9 @@ while True:
     if ball.left <= 0 or ball.right >= ScreenWidth:
         ball_x_speed *= -1
 
+    if ball.colliderect(player) or ball.colliderect(opponent):
+        ball_x_speed *= -1
+
     # updating the window
     pygame.display.flip()
     clock.tick(60)
