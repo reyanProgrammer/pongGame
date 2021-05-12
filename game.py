@@ -1,4 +1,6 @@
-import pygame, sys
+import pygame
+import sys
+import random
 
 """© reyan mehmood All right reserved"""
 # general setup
@@ -21,10 +23,12 @@ bg_color = pygame.Color('grey12')
 light_grey = (200, 200, 200)
 
 # ball speed
-ball_x_speed = 7
-ball_y_speed = 7
+ball_x_speed = 7 * random.choice((1, -1))
+ball_y_speed = 7 * random.choice((1, -1))
 
 player_speed = 0
+
+opponent_speed = 7
 
 
 def ball_move():
@@ -32,7 +36,7 @@ def ball_move():
     if ball.top <= 0 or ball.bottom >= ScreenHeight:
         ball_y_speed *= -1
     if ball.left <= 0 or ball.right >= ScreenWidth:
-        ball_x_speed *= -1
+        ball_restart()
 
     if ball.colliderect(player) or ball.colliderect(opponent):
         ball_x_speed *= -1
@@ -44,6 +48,24 @@ def player_animation():
     if player.bottom >= ScreenHeight:
         player.bottom = ScreenHeight
     player.y += player_speed
+
+
+def opponentanimation():
+    if opponent.top < ball.y:
+        opponent.top += opponent_speed
+    if opponent.bottom > ball.y:
+        opponent.bottom -= opponent_speed
+    if opponent.top <= 0:
+        opponent.top = 0
+    if opponent.bottom >= ScreenHeight:
+        opponent.bottom = ScreenHeight
+
+
+def ball_restart():
+    global ball_x_speed, ball_y_speed
+    ball.center = (ScreenWidth / 2, ScreenHeight / 2)
+    ball_y_speed *= random.choice((1, -1))
+    ball_x_speed *= random.choice((1, -1))
 
 
 while True:
@@ -75,6 +97,7 @@ while True:
     ball.y += ball_y_speed
     ball_move()
     player_animation()
+    opponentanimation()
 
     # updating the window
     pygame.display.flip()
